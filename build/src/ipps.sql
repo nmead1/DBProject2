@@ -59,7 +59,14 @@ CREATE TABLE ProviderServices (
 
 -- create user with appropriate access to the tables
 
+CREATE USER "ipps" PASSWORD '135791';
 
+GRANT ALL ON TABLE States TO "ipps";
+GRANT ALL ON TABLE RUCAs TO "ipps";
+GRANT ALL ON TABLE Services TO "ipps";
+GRANT ALL ON TABLE Cities TO "ipps";
+GRANT ALL ON TABLE Providers TO "ipps";
+GRANT ALL ON TABLE ProviderServices TO "ipps";
 
 -- queries
 

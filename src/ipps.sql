@@ -59,6 +59,8 @@ CREATE TABLE ProviderServices (
 
 -- create user with appropriate access to the tables
 
+
+
 -- queries
 
 -- a) List all diagnosis in alphabetical order.    

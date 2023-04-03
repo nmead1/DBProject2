@@ -21,13 +21,9 @@ CREATE TABLE RUCAs (
     Rndrng_Prvdr_RUCA_Desc VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Services (
+CREATE TABLE Diagnoses (
     DRG_Cd INT PRIMARY KEY,
     DRG_Desc VARCHAR(100) NOT NULL,
-    Tot_Dschrgs INT,
-    Avg_Submtd_Cvrd_Chrg FLOAT,
-    Avg_Tot_Pymt_Amt FLOAT,
-    Avg_Mdcr_Pymt_Amt FLOAT
 );
 
 CREATE TABLE Cities (
@@ -39,22 +35,27 @@ CREATE TABLE Cities (
 );
 
 CREATE TABLE Providers (
-    Rndrng_Prvdr_CCN INT PRIMARY KEY,
+    Rndrng_Prvdr_CCN INT,
     Rndrng_Prvdr_Org_Name VARCHAR(55) NOT NULL,
     Rndrng_Prvdr_St VARCHAR(45),
     Rndrng_Prvdr_City VARCHAR(20),
     Rndrng_Prvdr_Zip5 INT,
     Rndrng_Prvdr_RUCA INT,
     FOREIGN KEY (Rndrng_Prvdr_City, Rndrng_Prvdr_Zip5) REFERENCES Cities(Rndrng_Prvdr_City, Rndrng_Prvdr_Zip5),
-    FOREIGN KEY (Rndrng_Prvdr_RUCA) REFERENCES RUCAs(Rndrng_Prvdr_RUCA)
+    FOREIGN KEY (Rndrng_Prvdr_RUCA) REFERENCES RUCAs(Rndrng_Prvdr_RUCA),
+    PRIMARY KEY(Rndrng_Prvdr_CCN, Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_St)
 );
 
 CREATE TABLE ProviderServices (
     Rndrng_Prvdr_CCN INT,
     DRG_Cd INT,
+    Tot_Dschrgs INT,
+    Avg_Submtd_Cvrd_Chrg FLOAT,
+    Avg_Tot_Pymt_Amt FLOAT,
+    Avg_Mdcr_Pymt_Amt FLOAT,
     FOREIGN KEY (Rndrng_Prvdr_CCN) REFERENCES Providers(Rndrng_Prvdr_CCN),
     FOREIGN KEY (DRG_Cd) REFERENCES Services(DRG_Cd),
-    PRIMARY KEY(Rndrng_Prvdr_CCN, DRG_Cd)
+    PRIMARY KEY(Rndrng_Prvdr_CCN, DRG_Cd, Tot_Dschrgs)
 );
 
 -- create user with appropriate access to the tables
@@ -63,7 +64,7 @@ CREATE USER "ipps" PASSWORD '135791';
 
 GRANT ALL ON TABLE States TO "ipps";
 GRANT ALL ON TABLE RUCAs TO "ipps";
-GRANT ALL ON TABLE Services TO "ipps";
+GRANT ALL ON TABLE Diagnoses TO "ipps";
 GRANT ALL ON TABLE Cities TO "ipps";
 GRANT ALL ON TABLE Providers TO "ipps";
 GRANT ALL ON TABLE ProviderServices TO "ipps";

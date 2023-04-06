@@ -17,7 +17,7 @@ CREATE TABLE States (
 );
 
 CREATE TABLE RUCAs (
-    Rndrng_Prvdr_RUCA INT PRIMARY KEY,
+    Rndrng_Prvdr_RUCA FLOAT PRIMARY KEY,
     Rndrng_Prvdr_RUCA_Desc VARCHAR(100) NOT NULL
 );
 
@@ -29,8 +29,10 @@ CREATE TABLE Diagnoses (
 CREATE TABLE Cities (
     Rndrng_Prvdr_City VARCHAR(20),
     Rndrng_Prvdr_Zip5 INT,
+    Rndrng_Prvdr_RUCA FLOAT,
     Rndrng_Prvdr_State_FIPS INT,
     PRIMARY KEY(Rndrng_Prvdr_City, Rndrng_Prvdr_Zip5),
+    FOREIGN KEY (Rndrng_Prvdr_RUCA) REFERENCES RUCAs(Rndrng_Prvdr_RUCA),
     FOREIGN KEY (Rndrng_Prvdr_State_FIPS) REFERENCES States(Rndrng_Prvdr_State_FIPS)
 );
 
@@ -40,9 +42,7 @@ CREATE TABLE Providers (
     Rndrng_Prvdr_St VARCHAR(45),
     Rndrng_Prvdr_City VARCHAR(20),
     Rndrng_Prvdr_Zip5 INT,
-    Rndrng_Prvdr_RUCA INT,
     FOREIGN KEY (Rndrng_Prvdr_City, Rndrng_Prvdr_Zip5) REFERENCES Cities(Rndrng_Prvdr_City, Rndrng_Prvdr_Zip5),
-    FOREIGN KEY (Rndrng_Prvdr_RUCA) REFERENCES RUCAs(Rndrng_Prvdr_RUCA),
     PRIMARY KEY(Rndrng_Prvdr_CCN, Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_St)
 );
 

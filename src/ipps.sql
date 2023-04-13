@@ -73,22 +73,73 @@ GRANT ALL ON TABLE ProviderServices TO "ipps";
 
 -- queries
 
--- a) List all diagnosis in alphabetical order.    
+-- a) List all diagnosis in alphabetical order.   
+
+SELECT * FROM Diagnoses
+ORDER BY DRG_Desc;
 
 -- b) List the names and correspondent states (including Washington D.C.) of all of the providers in alphabetical order (state first, provider name next, no repetition). 
 
+SELECT Rndrng_Prvdr_State_Abrvtn, Rndrng_Prvdr_Org_Name FROM Providers
+NATURAL JOIN CITIES
+NATURAL JOIN States
+ORDER BY Rndrng_Prvdr_Org_Name;
+
 -- c) List the total number of providers.
+
+SELECT COUNT(*) FROM Providers;
 
 -- d) List the total number of providers per state (including Washington D.C.) in alphabetical order (also printing out the state).  
 
+SELECT Rndrng_Prvdr_State_Abrvtn, COUNT(Rndrng_Prvdr_Org_Name) FROM Providers
+NATURAL JOIN Cities
+NATURAL JOIN States
+GROUP BY Rndrng_Prvdr_State_Abrvtn
+ORDER BY Rndrng_Prvdr_State_Abrvtn;
+
 -- e) List the providers names in Denver (CO) or in Lakewood (CO) in alphabetical order  
+
+SELECT Rndrng_Prvdr_Org_Name FROM Providers
+NATURAL JOIN Cities
+WHERE Rndrng_Prvdr_City IN ('Denver', 'Lakewood')
+ORDER BY Rndrng_Prvdr_Org_Name;
 
 -- f) List the number of providers per RUCA code (showing the code and description)
 
+SELECT Rndrng_Prvdr_RUCA, Rndrng_Prvdr_RUCA_Desc, COUNT(Rndrng_Prvdr_Org_Name) FROM RUCAs
+NATURAL JOIN CITIES
+NATURAL JOIN Providers
+GROUP BY Rndrng_Prvdr_RUCA, Rndrng_Prvdr_RUCA_Desc
+ORDER BY Rndrng_Prvdr_RUCA;
+
 -- g) Show the DRG description for code 308 
+
+SELECT DRG_Desc FROM Diagnoses
+WHERE DRG_Cd = 308;
 
 -- h) List the top 10 providers (with their correspondent state) that charged (as described in Avg_Submtd_Cvrd_Chrg) the most for the DRG code 308. Output should display the provider name, their city, state, and the average charged amount in descending order.   
 
+SELECT Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_City, Rndrng_Prvdr_State_Abrvtn, Avg_Submtd_Cvrd_Chrg FROM Providers
+NATURAL JOIN Cities
+NATURAL JOIN states
+NATURAL JOIN ProviderServices
+WHERE DRG_Cd = 308
+ORDER BY Avg_Submtd_Cvrd_Chrg DESC
+LIMIT 10;
+
 -- i) List the average charges (as described in Avg_Submtd_Cvrd_Chrg) of all providers per state for the DRG code 308. Output should display the state and the average charged amount per state in descending order (of the charged amount) using only two decimals. 
 
+SELECT Rndrng_Prvdr_State_Abrvtn, ROUND(CAST(AVG(Avg_Submtd_Cvrd_Chrg) AS NUMERIC), 2) AS AverageCharges FROM Providers
+NATURAL JOIN States
+NATURAL JOIN ProviderServices
+WHERE DRG_Cd = 308
+GROUP BY Rndrng_Prvdr_State_Abrvtn
+ORDER BY AverageCharges DESC;
+
 -- j) Which provider and clinical condition pair had the highest difference between the amount charged (as described in Avg_Submtd_Cvrd_Chrg) and the amount covered by Medicare only (as described in Avg_Mdcr_Pymt_Amt)?
+
+SELECT Rndrng_Prvdr_Org_Name, DRG_Desc FROM Providers
+NATURAL JOIN ProviderServices
+NATURAL JOIN Diagnoses
+ORDER BY (Avg_Submtd_Cvrd_Chrg - Avg_Mdcr_Pymt_Amt) DESC
+LIMIT 1;

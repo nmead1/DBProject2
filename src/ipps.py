@@ -64,7 +64,7 @@ if conn:
 
     cur.execute("""
         INSERT INTO ProviderServices (Rndrng_Prvdr_CCN, Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_St, DRG_Cd, Tot_Dschrgs, Avg_Submtd_Cvrd_Chrg, Avg_Tot_Pymt_Amt, Avg_Mdcr_Pymt_Amt)
-        SELECT DISTINCT CAST(Rndrng_Prvdr_CCN AS INT), Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_St, CAST(DRG_Cd AS INT), CAST(Tot_Dschrgs AS INT), CAST(Avg_Submtd_Cvrd_Chrg AS FLOAT), CAST(Avg_Tot_Pymt_Amt AS FLOAT), CAST(Avg_Mdcr_Pymt_Amt AS FLOAT)
+        SELECT CAST(Rndrng_Prvdr_CCN AS INT), Rndrng_Prvdr_Org_Name, Rndrng_Prvdr_St, CAST(DRG_Cd AS INT), CAST(Tot_Dschrgs AS INT), CAST(Avg_Submtd_Cvrd_Chrg AS FLOAT), CAST(Avg_Tot_Pymt_Amt AS FLOAT), CAST(Avg_Mdcr_Pymt_Amt AS FLOAT)
         FROM temp_table;
     """)
 

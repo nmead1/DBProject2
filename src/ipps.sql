@@ -91,7 +91,7 @@ SELECT COUNT(*) FROM Providers;
 
 -- d) List the total number of providers per state (including Washington D.C.) in alphabetical order (also printing out the state).  
 
-SELECT Rndrng_Prvdr_State_Abrvtn, COUNT(Rndrng_Prvdr_Org_Name) FROM Providers
+SELECT Rndrng_Prvdr_State_Abrvtn, COUNT(Rndrng_Prvdr_Org_Name) as providerCount FROM Providers
 NATURAL JOIN Cities
 NATURAL JOIN States
 GROUP BY Rndrng_Prvdr_State_Abrvtn
@@ -106,7 +106,7 @@ ORDER BY Rndrng_Prvdr_Org_Name;
 
 -- f) List the number of providers per RUCA code (showing the code and description)
 
-SELECT Rndrng_Prvdr_RUCA, Rndrng_Prvdr_RUCA_Desc, COUNT(Rndrng_Prvdr_Org_Name) FROM RUCAs
+SELECT Rndrng_Prvdr_RUCA, Rndrng_Prvdr_RUCA_Desc, COUNT(Rndrng_Prvdr_Org_Name) as providerCount FROM RUCAs
 NATURAL JOIN CITIES
 NATURAL JOIN Providers
 GROUP BY Rndrng_Prvdr_RUCA, Rndrng_Prvdr_RUCA_Desc

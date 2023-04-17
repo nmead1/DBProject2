@@ -18,7 +18,7 @@ cur.execute('DEALLOCATE ALL;')
 conn.rollback()
 conn.autocommit = True
 
-csv_path = 'C:\\Users\\mcrae\\Documents\\repos\\DB\\DBProject2\\build\\data\\MUP_IHP_RY22_P02_V10_DY20_PrvSvc.csv'
+csv_path = 'C:\\Users\\mcrae\\Documents\\repos\\DB\\DBProject2\\data\\MUP_IHP_RY22_P02_V10_DY20_PrvSvc.csv'
 temp_table_name = 'temp_table'
 
 if conn: 
